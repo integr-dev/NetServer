@@ -31,4 +31,5 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("io.ktor:ktor-server-html-builder:$ktor_version")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.710")
+    implementation("io.ktor:ktor-server-sessions:$ktor_version")
 }
