@@ -1,7 +1,9 @@
 package net.integr.plugins
 
-import io.ktor.client.*
+import com.google.gson.GsonBuilder
+import com.google.gson.annotations.Expose
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
@@ -10,13 +12,18 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.routing.get
 import io.ktor.server.sessions.*
+import io.ktor.util.Identity.decode
 import kotlinx.css.*
 import kotlinx.html.*
-import kotlinx.serialization.builtins.serializer
 import net.integr.UserSession
+import net.integr.users
+import org.jetbrains.annotations.Debug
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+
+
+//TODO: encrypt password from signup request
 
 fun Application.configureRouting() {
     routing {
@@ -30,9 +37,10 @@ fun Application.configureRouting() {
             val userSession = call.sessions.get<UserSession>()
             if (userSession == null) {
                 call.respondHtml {
+                    lang = "en"
                     head {
                         title {
-                            +"Login Panel"
+                            +"Login"
                         }
                         link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
                         script {
@@ -40,6 +48,7 @@ fun Application.configureRouting() {
                         }
                         link(rel="stylesheet", href="/styles.css", type = "text/css")
                         link(rel="icon", type="image/png", href="/logo_round.png")
+                        meta("description", content = "NetServer Test")
                     }
                     body {
                         if (call.parameters.contains("logging_out")) {
@@ -60,7 +69,7 @@ fun Application.configureRouting() {
                             div(classes = "px") {
                                 div(classes = "alert alert-warning alert-dismissible fade show") {
                                     i(classes = "fa-solid fa-triangle-exclamation")
-                                    +" Invalid credentials!"
+                                    +" Username and/or Password incorrect!"
                                     a(href = "/login", classes = "inherit") {
                                         button(type = ButtonType.button, classes = "close") {
                                             i(classes = "fa-solid fa-xmark")
@@ -84,9 +93,23 @@ fun Application.configureRouting() {
                             }
                         }
 
-                        form(action = "/login_internal", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
+                        if (call.parameters.contains("deleted")) {
+                            div(classes = "px") {
+                                div(classes = "alert alert-success alert-dismissible fade show") {
+                                    i(classes = "fa-solid fa-triangle-exclamation")
+                                    +" Successfully deleted your account!"
+                                    a(href = "/login") {
+                                        button(type = ButtonType.button, classes = "close") {
+                                            i(classes = "fa-solid fa-xmark")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        form(action = "/login_internal", encType = FormEncType.multipartFormData, method = FormMethod.post) {
                             div(classes = "login") {
-                                img(classes = "img", src = "/logo.jpg")
+                                img(classes = "img", src = "/logo.jpg", alt = "Logo")
                                 p(classes = "title") {
                                     +"NetServer"
                                 }
@@ -126,9 +149,10 @@ fun Application.configureRouting() {
 
         get("/signup") {
             call.respondHtml {
+                lang = "en"
                 head {
                     title {
-                        +"Login Panel"
+                        +"Signup"
                     }
                     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
                     script {
@@ -136,6 +160,7 @@ fun Application.configureRouting() {
                     }
                     link(rel="stylesheet", href="/styles.css", type = "text/css")
                     link(rel="icon", type="image/png", href="/logo_round.png")
+                    meta("description", content = "NetServer Test")
                 }
                 body {
                     if (call.parameters.contains("retry_signup")) {
@@ -162,37 +187,44 @@ fun Application.configureRouting() {
                         }
                     }
 
-                    form(action = "/signup_internal", encType = FormEncType.applicationXWwwFormUrlEncoded, method = FormMethod.post) {
+                    form(action = "/signup_internal", encType = FormEncType.multipartFormData, method = FormMethod.post) {
                         div(classes = "login") {
-                            img(classes = "img", src = "/logo.jpg")
+                            img(classes = "img", src = "/logo.jpg", alt = "Logo")
+
                             p(classes = "title") {
                                 +"NetServer Signup"
                             }
+
                             p(classes = "pad") {
                                 +"Username"
                                 textInput(name = "username", classes = "form-control") {
                                     required = true
                                 }
                             }
+
                             p(classes = "pad") {
                                 +"Email"
                                 emailInput(name = "email", classes = "form-control") {
                                     required = true
                                 }
                             }
+
                             p(classes = "pad") {
                                 +"Password"
                                 passwordInput(name = "password", classes = "form-control") {
                                     required = true
                                 }
                             }
+
                             p(classes = "pad") {
                                 checkBoxInput(name = "agree_tos") {
                                     required = true
                                 }
 
-                                +" I agree to the Terms of Service"
+                                +" I agree to the "
+                                a(href = "/tos") {+"Terms of Service"}
                             }
+
                             p(classes = "pad") {
                                 button(classes = "btn btn-warning", type = ButtonType.submit) {
                                     i(classes = "fa-solid fa-user-plus")
@@ -209,6 +241,7 @@ fun Application.configureRouting() {
             if (call.sessions.get<UserSession>() == null) call.respondRedirect("/login?not_logged_in")
 
             call.respondHtml {
+                lang = "en"
                 head {
                     title {
                         +"Account"
@@ -219,6 +252,7 @@ fun Application.configureRouting() {
                     script {
                         src = "https://kit.fontawesome.com/0a7e2ccef9.js"
                     }
+                    meta("description", content = "NetServer Test")
                 }
                 body {
                     form(classes = "form-inline") {
@@ -226,6 +260,13 @@ fun Application.configureRouting() {
                             button(classes = "btn btn-warning", type = ButtonType.button) {
                                 i(classes = "fa-solid fa-right-from-bracket")
                                 +" Logout"
+                            }
+                        }
+
+                        a(href = "/delete_internal", classes = "pad") {
+                            button(classes = "btn btn-danger", type = ButtonType.button) {
+                                i(classes = "fa-solid fa-trash")
+                                +" Delete account"
                             }
                         }
                     }
@@ -239,29 +280,61 @@ fun Application.configureRouting() {
             }
         }
 
-        post("/login_internal") {
-            val formParameters = call.receiveParameters()
-            val username = formParameters["username"].toString()
-            val password = formParameters["password"].toString()
+        get("/delete_internal") {
+            if (call.sessions.get<UserSession>() != null) {
+                val userSession = call.sessions.get<UserSession>()
+                val username = userSession!!.username
 
-            if (hash(password) == hash("Integr") && username == "Integr") {
+                users.users.remove(users.getFromName(username))
+                call.sessions.clear<UserSession>()
+                users.saveJson()
+
+                call.respondRedirect("/login?deleted")
+            } else call.respondRedirect("/login?not_logged_in")
+        }
+
+        post("/login_internal") {
+            val data = call.receiveMultipart()
+            var username = ""
+            var password = ""
+
+            data.forEachPart { part ->
+                if (part is PartData.FormItem) {
+                    if (part.name == "username") username = part.value
+                    if (part.name == "password") password = part.value
+                }
+            }
+
+            if (users.getFromName(username) != null && users.getFromName(username)!!.passwordHash == hash(password)) {
                 call.sessions.set(UserSession(username = username))
                 call.respondRedirect("/account")
             } else call.respondRedirect("/login?retry_login")
         }
 
         post("/signup_internal") {
-            val formParameters = call.receiveParameters()
-            val username = formParameters["username"].toString()
-            val password = formParameters["password"].toString()
-            val email = formParameters["email"].toString()
+            val data = call.receiveMultipart()
+            var username = ""
+            var password = ""
+            var email = ""
 
-            if (username != "Integr") call.respondRedirect("/signup?retry_signup=Username")
-            if (email != "integr@integr.is-a.dev") call.respondRedirect("/signup?retry_signup=Email")
-            if (hash(password) != hash("Integr")) call.respondRedirect("/signup?retry_signup=Password")
+            data.forEachPart { part ->
+                if (part is PartData.FormItem) {
+                    if (part.name == "username") username = part.value
+                    if (part.name == "password") password = part.value
+                    if (part.name == "email") email = part.value
+                }
+            }
 
-            call.sessions.set(UserSession(username = username))
-            call.respondRedirect("/account")
+            if (users.getFromName(username) == null) {
+                if (users.getFromEmail(email) == null) {
+                    val user = UserObj(username, hash(password), email)
+                    users.users += user
+                    users.saveJson()
+
+                    call.sessions.set(UserSession(username = username))
+                    call.respondRedirect("/account")
+                } else call.respondRedirect("/signup?retry_signup=Email")
+            } else call.respondRedirect("/signup?retry_signup=Username")
         }
 
         get("/logout_internal") {
@@ -297,6 +370,11 @@ fun Application.configureRouting() {
                 rule("html") {
                     height = LinearDimension("100%")
                     width = LinearDimension("100%")
+                }
+
+                rule(".center") {
+                    margin = Margin(LinearDimension("20%"))
+                    textAlign = TextAlign.start
                 }
 
                 rule(".img") {
@@ -348,6 +426,75 @@ fun Application.configureRouting() {
                 }
             }
         }
+
+        get("/tos") {
+            call.respondHtml {
+                head {
+                    title {
+                        +"Terms of Service"
+                    }
+                    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
+                    link(rel="stylesheet", href="/styles.css", type = "text/css")
+                    link(rel="icon", type="image/png", href="/logo_round.png")
+                    script {
+                        src = "https://kit.fontawesome.com/0a7e2ccef9.js"
+                    }
+                    meta("viewport", content="width=device-width, initial-scale=1")
+                }
+                body {
+                    form(classes = "form-inline") {
+                        a(href = "/signup", classes = "px") {
+                            button(classes = "btn btn-warning", type = ButtonType.button, formMethod = ButtonFormMethod.post) {
+                                i(classes = "fa-solid fa-reply")
+                                +" Back"
+                            }
+                        }
+                    }
+
+                    div(classes = "center") {
+                        p(classes = "title") {
+                            +"Terms of Service"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+
+                        p {
+                            +"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -357,4 +504,30 @@ suspend inline fun ApplicationCall.respondCss(builder: CssBuilder.() -> Unit) {
 
 fun hash(password: String): String {
     return BigInteger(1, MessageDigest.getInstance("SHA-512").digest(password.toByteArray())).toString(16)
+}
+
+data class UserObj(@Expose val username: String, @Expose val passwordHash: String, @Expose val email: String)
+
+data class Storage(@Expose var users: MutableList<UserObj>) {
+    fun saveJson() {
+        return File("./store.json").writeText(GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(this))
+    }
+
+    fun getFromName(name: String): UserObj? {
+        return users.find { it.username == name }
+    }
+
+    fun getFromEmail(name: String): UserObj? {
+        return users.find { it.username == name }
+    }
+
+    companion object {
+        fun loadJson(): Storage {
+            val text = File("./store.json").readText()
+            if (text.isEmpty()) {
+                Storage(mutableListOf()).saveJson()
+            }
+            return GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().fromJson(text, Storage::class.java)
+        }
+    }
 }

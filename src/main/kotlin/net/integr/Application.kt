@@ -1,17 +1,17 @@
 package net.integr
 
-import io.ktor.client.*
-import io.ktor.client.plugins.cookies.*
-import io.ktor.http.*
+
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.sessions.*
 import io.ktor.server.tomcat.*
 import io.ktor.util.*
-import io.ktor.websocket.*
 import net.integr.plugins.*
+import java.io.File
 
+var users = Storage(mutableListOf())
 fun main() {
+    users = Storage.loadJson()
     embeddedServer(Tomcat, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 
@@ -28,7 +28,6 @@ fun Application.module() {
         }
     }
 
-    configureSecurity()
     configureRouting()
 }
 
