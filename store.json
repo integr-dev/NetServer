@@ -1,9 +1,3 @@
 {
-  "users": [
-    {
-      "username": "Integr",
-      "passwordHash": "d492a9ad2451bdc0098bcd23e41f9ebe6120a511ea11d46b8d202cbbe3ac8eba56d0d7c7fd946b6423f11c947395654de8f87be3c2c3a05deace62ae0152c6c6",
-      "email": "inte@gr"
-    }
-  ]
+  "users": []
 }

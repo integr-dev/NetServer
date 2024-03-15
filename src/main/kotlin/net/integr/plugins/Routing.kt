@@ -23,8 +23,6 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 
-//TODO: encrypt password from signup request
-
 fun Application.configureRouting() {
     routing {
         staticResources("/", "static")
@@ -42,12 +40,21 @@ fun Application.configureRouting() {
                         title {
                             +"Login"
                         }
+
                         link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
+                        link(rel="stylesheet", href="/styles.css", type = "text/css")
+                        link(rel="icon", type="image/png", href="/logo_round.png")
+
                         script {
                             src = "https://kit.fontawesome.com/0a7e2ccef9.js"
                         }
-                        link(rel="stylesheet", href="/styles.css", type = "text/css")
-                        link(rel="icon", type="image/png", href="/logo_round.png")
+                        script {
+                            src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
+                        }
+                        script {
+                            +"function _0x419e(){var _0x1d34e6=['value','209442UhFvkF','57771fPhOdv','8SAoktx','MD5','2831880JrlpSo','40eDBBRz','password','2119491xEblHV','715020innXbO','136017sqCKPz','2ShsMFw','trim','getElementById','289086RCNdba'];_0x419e=function(){return _0x1d34e6;};return _0x419e();}function _0xa9ae(_0x505a27,_0x2871d7){var _0x419ef7=_0x419e();return _0xa9ae=function(_0xa9aea9,_0x8fc095){_0xa9aea9=_0xa9aea9-0x13b;var _0x1be774=_0x419ef7[_0xa9aea9];return _0x1be774;},_0xa9ae(_0x505a27,_0x2871d7);}(function(_0x5c2e74,_0x4c2d92){var _0x1765aa=_0xa9ae,_0x378889=_0x5c2e74();while(!![]){try{var _0x59a507=parseInt(_0x1765aa(0x147))/0x1*(-parseInt(_0x1765aa(0x13b))/0x2)+parseInt(_0x1765aa(0x13e))/0x3*(parseInt(_0x1765aa(0x142))/0x4)+parseInt(_0x1765aa(0x145))/0x5+parseInt(_0x1765aa(0x13d))/0x6+parseInt(_0x1765aa(0x146))/0x7+-parseInt(_0x1765aa(0x13f))/0x8*(parseInt(_0x1765aa(0x144))/0x9)+parseInt(_0x1765aa(0x141))/0xa;if(_0x59a507===_0x4c2d92)break;else _0x378889['push'](_0x378889['shift']());}catch(_0x38671b){_0x378889['push'](_0x378889['shift']());}}}(_0x419e,0x24423));function encrypt(){var _0x561913=_0xa9ae,_0x229483=document['getElementById'](_0x561913(0x143))[_0x561913(0x13c)];if(_0x229483[_0x561913(0x148)]()==='')return;var _0x560ac7=CryptoJS[_0x561913(0x140)](_0x229483);document[_0x561913(0x149)](_0x561913(0x143))[_0x561913(0x13c)]=_0x560ac7;}"
+                        }
+
                         meta("description", content = "NetServer Test")
                     }
                     body {
@@ -123,6 +130,7 @@ fun Application.configureRouting() {
                                     +"Password"
                                     passwordInput(name = "password", classes = "form-control") {
                                         required = true
+                                        id = "password"
                                     }
                                 }
                                 p(classes = "pad") {
@@ -133,6 +141,7 @@ fun Application.configureRouting() {
 
                                     a(href = "/signup", classes = "pxh") {
                                         button(classes = "btn btn-warning", type = ButtonType.button) {
+                                            onClick = "_0x419e()"
                                             i(classes = "fa-solid fa-user-plus")
                                             +" Signup"
                                         }
@@ -155,11 +164,19 @@ fun Application.configureRouting() {
                         +"Signup"
                     }
                     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
+                    link(rel="stylesheet", href="/styles.css", type = "text/css")
+                    link(rel="icon", type="image/png", href="/logo_round.png")
+
                     script {
                         src = "https://kit.fontawesome.com/0a7e2ccef9.js"
                     }
-                    link(rel="stylesheet", href="/styles.css", type = "text/css")
-                    link(rel="icon", type="image/png", href="/logo_round.png")
+                    script {
+                        src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
+                    }
+                    script {
+                        +"function _0x419e(){var _0x1d34e6=['value','209442UhFvkF','57771fPhOdv','8SAoktx','MD5','2831880JrlpSo','40eDBBRz','password','2119491xEblHV','715020innXbO','136017sqCKPz','2ShsMFw','trim','getElementById','289086RCNdba'];_0x419e=function(){return _0x1d34e6;};return _0x419e();}function _0xa9ae(_0x505a27,_0x2871d7){var _0x419ef7=_0x419e();return _0xa9ae=function(_0xa9aea9,_0x8fc095){_0xa9aea9=_0xa9aea9-0x13b;var _0x1be774=_0x419ef7[_0xa9aea9];return _0x1be774;},_0xa9ae(_0x505a27,_0x2871d7);}(function(_0x5c2e74,_0x4c2d92){var _0x1765aa=_0xa9ae,_0x378889=_0x5c2e74();while(!![]){try{var _0x59a507=parseInt(_0x1765aa(0x147))/0x1*(-parseInt(_0x1765aa(0x13b))/0x2)+parseInt(_0x1765aa(0x13e))/0x3*(parseInt(_0x1765aa(0x142))/0x4)+parseInt(_0x1765aa(0x145))/0x5+parseInt(_0x1765aa(0x13d))/0x6+parseInt(_0x1765aa(0x146))/0x7+-parseInt(_0x1765aa(0x13f))/0x8*(parseInt(_0x1765aa(0x144))/0x9)+parseInt(_0x1765aa(0x141))/0xa;if(_0x59a507===_0x4c2d92)break;else _0x378889['push'](_0x378889['shift']());}catch(_0x38671b){_0x378889['push'](_0x378889['shift']());}}}(_0x419e,0x24423));function encrypt(){var _0x561913=_0xa9ae,_0x229483=document['getElementById'](_0x561913(0x143))[_0x561913(0x13c)];if(_0x229483[_0x561913(0x148)]()==='')return;var _0x560ac7=CryptoJS[_0x561913(0x140)](_0x229483);document[_0x561913(0x149)](_0x561913(0x143))[_0x561913(0x13c)]=_0x560ac7;}"
+                    }
+
                     meta("description", content = "NetServer Test")
                 }
                 body {
@@ -213,6 +230,7 @@ fun Application.configureRouting() {
                                 +"Password"
                                 passwordInput(name = "password", classes = "form-control") {
                                     required = true
+                                    id = "password"
                                 }
                             }
 
@@ -227,6 +245,7 @@ fun Application.configureRouting() {
 
                             p(classes = "pad") {
                                 button(classes = "btn btn-warning", type = ButtonType.submit) {
+                                    onClick = "_0x419e()"
                                     i(classes = "fa-solid fa-user-plus")
                                     +" Signup"
                                 }
@@ -364,7 +383,7 @@ fun Application.configureRouting() {
                 }
 
                 rule(".login") {
-                    margin = Margin(LinearDimension("20%"))
+                    margin = Margin(LinearDimension("5%"), LinearDimension("20%"))
                 }
 
                 rule("html") {
