@@ -33,5 +33,7 @@ dependencies {
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.710")
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("io.ktor:ktor-server-rate-limit:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
 
 }

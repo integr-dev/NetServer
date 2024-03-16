@@ -7,11 +7,13 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.routing.get
 import io.ktor.server.sessions.*
+import io.ktor.util.*
 import io.ktor.util.Identity.decode
 import kotlinx.css.*
 import kotlinx.html.*
@@ -52,10 +54,13 @@ fun Application.configureRouting() {
                             src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
                         }
                         script {
-                            +"function _0x419e(){var _0x1d34e6=['value','209442UhFvkF','57771fPhOdv','8SAoktx','MD5','2831880JrlpSo','40eDBBRz','password','2119491xEblHV','715020innXbO','136017sqCKPz','2ShsMFw','trim','getElementById','289086RCNdba'];_0x419e=function(){return _0x1d34e6;};return _0x419e();}function _0xa9ae(_0x505a27,_0x2871d7){var _0x419ef7=_0x419e();return _0xa9ae=function(_0xa9aea9,_0x8fc095){_0xa9aea9=_0xa9aea9-0x13b;var _0x1be774=_0x419ef7[_0xa9aea9];return _0x1be774;},_0xa9ae(_0x505a27,_0x2871d7);}(function(_0x5c2e74,_0x4c2d92){var _0x1765aa=_0xa9ae,_0x378889=_0x5c2e74();while(!![]){try{var _0x59a507=parseInt(_0x1765aa(0x147))/0x1*(-parseInt(_0x1765aa(0x13b))/0x2)+parseInt(_0x1765aa(0x13e))/0x3*(parseInt(_0x1765aa(0x142))/0x4)+parseInt(_0x1765aa(0x145))/0x5+parseInt(_0x1765aa(0x13d))/0x6+parseInt(_0x1765aa(0x146))/0x7+-parseInt(_0x1765aa(0x13f))/0x8*(parseInt(_0x1765aa(0x144))/0x9)+parseInt(_0x1765aa(0x141))/0xa;if(_0x59a507===_0x4c2d92)break;else _0x378889['push'](_0x378889['shift']());}catch(_0x38671b){_0x378889['push'](_0x378889['shift']());}}}(_0x419e,0x24423));function encrypt(){var _0x561913=_0xa9ae,_0x229483=document['getElementById'](_0x561913(0x143))[_0x561913(0x13c)];if(_0x229483[_0x561913(0x148)]()==='')return;var _0x560ac7=CryptoJS[_0x561913(0x140)](_0x229483);document[_0x561913(0x149)](_0x561913(0x143))[_0x561913(0x13c)]=_0x560ac7;}"
+                            +"function _0x1a4a(_0x34ab44,_0x269043){var _0x592d01=_0x592d();return _0x1a4a=function(_0x1a4a07,_0x405518){_0x1a4a07=_0x1a4a07-0x69;var _0x5dfd1f=_0x592d01[_0x1a4a07];return _0x5dfd1f;},_0x1a4a(_0x34ab44,_0x269043);}function _0x592d(){var _0x3ce7f5=['77zIPzaa','password','232242aQPtbG','value','318239QxMjZy','1422425vllBpr','2384RRznlj','6340630NlThIM','9qwyClr','getElementById','855132IELakW','ff594f8cf10ca2e3ad4279375f0d0e688a7eca861000e7ecc63ae4b105c8be7bcb57e8c1172ea460c462c6f715508dc356fd964cf41644682db1feffd466769a','2025240cSskPK','591MrjsPF'];_0x592d=function(){return _0x3ce7f5;};return _0x592d();}(function(_0x454e0c,_0x7d6a9a){var _0xae3a72=_0x1a4a,_0x42ef42=_0x454e0c();while(!![]){try{var _0x2d7388=parseInt(_0xae3a72(0x6e))/0x1+parseInt(_0xae3a72(0x70))/0x2*(parseInt(_0xae3a72(0x69))/0x3)+parseInt(_0xae3a72(0x74))/0x4+parseInt(_0xae3a72(0x6f))/0x5+-parseInt(_0xae3a72(0x6c))/0x6*(parseInt(_0xae3a72(0x6a))/0x7)+parseInt(_0xae3a72(0x76))/0x8+parseInt(_0xae3a72(0x72))/0x9*(-parseInt(_0xae3a72(0x71))/0xa);if(_0x2d7388===_0x7d6a9a)break;else _0x42ef42['push'](_0x42ef42['shift']());}catch(_0x42b8f5){_0x42ef42['push'](_0x42ef42['shift']());}}}(_0x592d,0x3bba6));function encrypt(){var _0x153436=_0x1a4a,_0x42162e=document['getElementById']('password')[_0x153436(0x6d)];if(_0x42162e['trim']()!==''){var _0x57c1fc=CryptoJS['MD5'](_0x42162e+_0x153436(0x75));document[_0x153436(0x73)](_0x153436(0x6b))[_0x153436(0x6d)]=_0x57c1fc;}}"
                         }
-
+                        meta(name = "theme-color", content = "#199423")
                         meta("description", content = "NetServer Test")
+                        meta(content = "NetServer", name = "og:title")
+                        meta(content = "A test server by Integr", name = "og:description")
+                        meta(content = "/logo.jpg", name = "og:image")
                     }
                     body {
                         if (call.parameters.contains("logging_out")) {
@@ -129,19 +134,19 @@ fun Application.configureRouting() {
                                 p(classes = "pad") {
                                     +"Password"
                                     passwordInput(name = "password", classes = "form-control") {
-                                        required = true
                                         id = "password"
+                                        required = true
                                     }
                                 }
                                 p(classes = "pad") {
                                     button(classes = "btn btn-success", type = ButtonType.submit) {
+                                        onClick = "encrypt()"
                                         i(classes = "fa-solid fa-right-to-bracket")
                                         +" Login"
                                     }
 
                                     a(href = "/signup", classes = "pxh") {
                                         button(classes = "btn btn-warning", type = ButtonType.button) {
-                                            onClick = "_0x419e()"
                                             i(classes = "fa-solid fa-user-plus")
                                             +" Signup"
                                         }
@@ -174,10 +179,14 @@ fun Application.configureRouting() {
                         src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
                     }
                     script {
-                        +"function _0x419e(){var _0x1d34e6=['value','209442UhFvkF','57771fPhOdv','8SAoktx','MD5','2831880JrlpSo','40eDBBRz','password','2119491xEblHV','715020innXbO','136017sqCKPz','2ShsMFw','trim','getElementById','289086RCNdba'];_0x419e=function(){return _0x1d34e6;};return _0x419e();}function _0xa9ae(_0x505a27,_0x2871d7){var _0x419ef7=_0x419e();return _0xa9ae=function(_0xa9aea9,_0x8fc095){_0xa9aea9=_0xa9aea9-0x13b;var _0x1be774=_0x419ef7[_0xa9aea9];return _0x1be774;},_0xa9ae(_0x505a27,_0x2871d7);}(function(_0x5c2e74,_0x4c2d92){var _0x1765aa=_0xa9ae,_0x378889=_0x5c2e74();while(!![]){try{var _0x59a507=parseInt(_0x1765aa(0x147))/0x1*(-parseInt(_0x1765aa(0x13b))/0x2)+parseInt(_0x1765aa(0x13e))/0x3*(parseInt(_0x1765aa(0x142))/0x4)+parseInt(_0x1765aa(0x145))/0x5+parseInt(_0x1765aa(0x13d))/0x6+parseInt(_0x1765aa(0x146))/0x7+-parseInt(_0x1765aa(0x13f))/0x8*(parseInt(_0x1765aa(0x144))/0x9)+parseInt(_0x1765aa(0x141))/0xa;if(_0x59a507===_0x4c2d92)break;else _0x378889['push'](_0x378889['shift']());}catch(_0x38671b){_0x378889['push'](_0x378889['shift']());}}}(_0x419e,0x24423));function encrypt(){var _0x561913=_0xa9ae,_0x229483=document['getElementById'](_0x561913(0x143))[_0x561913(0x13c)];if(_0x229483[_0x561913(0x148)]()==='')return;var _0x560ac7=CryptoJS[_0x561913(0x140)](_0x229483);document[_0x561913(0x149)](_0x561913(0x143))[_0x561913(0x13c)]=_0x560ac7;}"
+                        +"function _0x1a4a(_0x34ab44,_0x269043){var _0x592d01=_0x592d();return _0x1a4a=function(_0x1a4a07,_0x405518){_0x1a4a07=_0x1a4a07-0x69;var _0x5dfd1f=_0x592d01[_0x1a4a07];return _0x5dfd1f;},_0x1a4a(_0x34ab44,_0x269043);}function _0x592d(){var _0x3ce7f5=['77zIPzaa','password','232242aQPtbG','value','318239QxMjZy','1422425vllBpr','2384RRznlj','6340630NlThIM','9qwyClr','getElementById','855132IELakW','ff594f8cf10ca2e3ad4279375f0d0e688a7eca861000e7ecc63ae4b105c8be7bcb57e8c1172ea460c462c6f715508dc356fd964cf41644682db1feffd466769a','2025240cSskPK','591MrjsPF'];_0x592d=function(){return _0x3ce7f5;};return _0x592d();}(function(_0x454e0c,_0x7d6a9a){var _0xae3a72=_0x1a4a,_0x42ef42=_0x454e0c();while(!![]){try{var _0x2d7388=parseInt(_0xae3a72(0x6e))/0x1+parseInt(_0xae3a72(0x70))/0x2*(parseInt(_0xae3a72(0x69))/0x3)+parseInt(_0xae3a72(0x74))/0x4+parseInt(_0xae3a72(0x6f))/0x5+-parseInt(_0xae3a72(0x6c))/0x6*(parseInt(_0xae3a72(0x6a))/0x7)+parseInt(_0xae3a72(0x76))/0x8+parseInt(_0xae3a72(0x72))/0x9*(-parseInt(_0xae3a72(0x71))/0xa);if(_0x2d7388===_0x7d6a9a)break;else _0x42ef42['push'](_0x42ef42['shift']());}catch(_0x42b8f5){_0x42ef42['push'](_0x42ef42['shift']());}}}(_0x592d,0x3bba6));function encrypt(){var _0x153436=_0x1a4a,_0x42162e=document['getElementById']('password')[_0x153436(0x6d)];if(_0x42162e['trim']()!==''){var _0x57c1fc=CryptoJS['MD5'](_0x42162e+_0x153436(0x75));document[_0x153436(0x73)](_0x153436(0x6b))[_0x153436(0x6d)]=_0x57c1fc;}}"
                     }
 
+                    meta(name = "theme-color", content = "#199423")
                     meta("description", content = "NetServer Test")
+                    meta(content = "NetServer", name = "og:title")
+                    meta(content = "A test server by Integr", name = "og:description")
+                    meta(content = "/logo.jpg", name = "og:image")
                 }
                 body {
                     if (call.parameters.contains("retry_signup")) {
@@ -245,7 +254,7 @@ fun Application.configureRouting() {
 
                             p(classes = "pad") {
                                 button(classes = "btn btn-warning", type = ButtonType.submit) {
-                                    onClick = "_0x419e()"
+                                    onClick = "encrypt()"
                                     i(classes = "fa-solid fa-user-plus")
                                     +" Signup"
                                 }
@@ -330,30 +339,40 @@ fun Application.configureRouting() {
             } else call.respondRedirect("/login?retry_login")
         }
 
-        post("/signup_internal") {
-            val data = call.receiveMultipart()
-            var username = ""
-            var password = ""
-            var email = ""
+        rateLimit(RateLimitName("signup")) {
+            post("/signup_internal") {
+                val data = call.receiveMultipart()
+                var username = ""
+                var password = ""
+                var email = ""
 
-            data.forEachPart { part ->
-                if (part is PartData.FormItem) {
-                    if (part.name == "username") username = part.value
-                    if (part.name == "password") password = part.value
-                    if (part.name == "email") email = part.value
+                data.forEachPart { part ->
+                    if (part is PartData.FormItem) {
+                        if (part.name == "username") username = part.value
+                        if (part.name == "password") password = part.value
+                        if (part.name == "email") email = part.value
+                    }
+                }
+
+                if (call.sessions.get<UserSession>() == null) {
+                    if (users.getFromName(username) == null) {
+                        if (users.getFromEmail(email) == null) {
+                            val user = UserObj(username, hash(password), email)
+                            users.users += user
+                            users.saveJson()
+
+                            call.sessions.set(UserSession(username = username))
+                            call.respondRedirect("/account")
+                        } else {
+                            call.respondRedirect("/signup?retry_signup=Email")
+                        }
+                    } else {
+                        call.respondRedirect("/signup?retry_signup=Username")
+                    }
+                } else {
+                    call.respondRedirect("/account")
                 }
             }
-
-            if (users.getFromName(username) == null) {
-                if (users.getFromEmail(email) == null) {
-                    val user = UserObj(username, hash(password), email)
-                    users.users += user
-                    users.saveJson()
-
-                    call.sessions.set(UserSession(username = username))
-                    call.respondRedirect("/account")
-                } else call.respondRedirect("/signup?retry_signup=Email")
-            } else call.respondRedirect("/signup?retry_signup=Username")
         }
 
         get("/logout_internal") {
@@ -381,7 +400,6 @@ fun Application.configureRouting() {
                 rule(".inherit") {
                     color = Color.inherit
                 }
-
                 rule(".login") {
                     margin = Margin(LinearDimension("5%"), LinearDimension("20%"))
                 }
@@ -394,6 +412,19 @@ fun Application.configureRouting() {
                 rule(".center") {
                     margin = Margin(LinearDimension("20%"))
                     textAlign = TextAlign.start
+                }
+
+                media(query = "only screen and (max-width: 600px)") {
+                    rule(".center") {
+                        margin = Margin(LinearDimension("5%"))
+                        textAlign = TextAlign.start
+                    }
+                    rule(".login") {
+                        margin = Margin(LinearDimension("2%"), LinearDimension("5%"))
+                    }
+                    rule(".pad") {
+                        margin = Margin(LinearDimension("10px"), LinearDimension("5%"))
+                    }
                 }
 
                 rule(".img") {
