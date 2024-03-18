@@ -1,19 +1,10 @@
 {
   "users": [
     {
-      "username": "cqssqyhay@mozmail.com",
-      "passwordHash": "8419eb17374a58899e50a01f2cfa06d2b5b504ef449c1839445ab8cb6e8b7939cf8244518f24dd9bb3d1e88833f7745babd0244ef0c521d70c0757195c039f08",
-      "email": "tes@d"
-    },
-    {
-      "username": "Yarak",
-      "passwordHash": "e29f507f8a5af0e2ea5f2182a34f5cfd83c89df122c0c886df3367fbe90860c95cba8f0b416a0be7ba9c0af690b14282f99623cde68352d649a0b48374434467",
-      "email": "yarak@gmail.com"
-    },
-    {
-      "username": "testtest",
-      "passwordHash": "a336f2cdf3cfb32e348c36b3367b26cfe5fed4dad12c73cb14cbba33983ea6bd44c393998713aa620e862372f1a7fd20b90f3dcef5adf6e0e3c4a785dfff6263",
-      "email": "test@test"
+      "username": "Mandelbrot",
+      "passwordHash": "731250fb3d71f41fae92937dc689e23db3dda0e10c030c7845aa38d1843b06154688fde82ae852015984ba55f2c8ad4f186192a2bea7930241a6eb6447dba02f",
+      "salt": "f8269703668ae78646abbc2c98ea5b1e893f2a243013a26fb293807ef7eae95da499ac746242270e5b67e787927b3777ca4268b67f5634f60b95b60f0ba80d10",
+      "email": "man@del"
     }
   ]
 }
