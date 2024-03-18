@@ -4,6 +4,7 @@ package net.integr
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
+import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
@@ -23,6 +24,8 @@ fun main() {
 }
 
 fun Application.module() {
+    install(ForwardedHeaders)
+
     install(Sessions) {
         val secretSignKey = hex("6819b57a326945c1968f45236589")
         val secretEncryptKey = hex("00112233445566778899aabbccddeeff")

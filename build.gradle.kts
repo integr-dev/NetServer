@@ -14,8 +14,8 @@ version = "0.0.1"
 application {
     mainClass.set("net.integr.ApplicationKt")
 
-    val isDevelopment: Boolean = true
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+    val isDevelopment = true
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment",  "-Djava.net.preferIPv4Stack=true")
 }
 
 repositories {
@@ -35,4 +35,5 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.ktor:ktor-server-rate-limit:$ktor_version")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
+    implementation("io.ktor:ktor-server-forwarded-header:$ktor_version")
 }

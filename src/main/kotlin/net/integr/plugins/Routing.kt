@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package net.integr.plugins
 
 import com.google.gson.GsonBuilder
@@ -7,6 +9,7 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -20,6 +23,8 @@ import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.SecureRandom
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Suppress("DEPRECATION")
 fun Application.configureRouting() {
@@ -27,10 +32,12 @@ fun Application.configureRouting() {
         staticResources("/", "static")
 
         get("/") {
+            call.log()
             call.respondRedirect("/login")
         }
 
         get("/login") {
+            call.log()
             val userSession = call.sessions.get<UserSession>()
             if (userSession == null) {
                 call.respondHtml {
@@ -52,6 +59,8 @@ fun Application.configureRouting() {
                         }
 
                         script(content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}")
+
+                        meta(name = "robots", content = "all")
 
                         meta(name = "theme-color", content = "#199423")
                         meta("description", content = "NetServer Test")
@@ -161,6 +170,7 @@ fun Application.configureRouting() {
         }
 
         get("/signup") {
+            call.log()
             call.respondHtml {
                 lang = "en"
                 head {
@@ -180,6 +190,8 @@ fun Application.configureRouting() {
                     }
 
                     script(content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}")
+
+                    meta(name = "robots", content = "all")
 
                     meta(name = "theme-color", content = "#199423")
                     meta("description", content = "NetServer Test")
@@ -267,6 +279,7 @@ fun Application.configureRouting() {
         }
 
         get("/account") {
+            call.log()
             if (call.sessions.get<UserSession>() == null) call.respondRedirect("/login?not_logged_in")
 
             call.respondHtml {
@@ -311,6 +324,7 @@ fun Application.configureRouting() {
         }
 
         get("/delete_internal") {
+            call.log()
             if (call.sessions.get<UserSession>() != null) {
                 val userSession = call.sessions.get<UserSession>()
                 val username = userSession!!.username
@@ -324,6 +338,7 @@ fun Application.configureRouting() {
         }
 
         post("/login_internal") {
+            call.log()
             val data = call.receiveMultipart()
             var username = ""
             var password = ""
@@ -354,6 +369,7 @@ fun Application.configureRouting() {
 
         rateLimit(RateLimitName("signup")) {
             post("/signup_internal") {
+                call.log()
                 val data = call.receiveMultipart()
                 var username = ""
                 var password = ""
@@ -398,6 +414,7 @@ fun Application.configureRouting() {
         }
 
         get("/logout_internal") {
+            call.log()
             if (call.sessions.get<UserSession>() != null) {
                 call.sessions.clear<UserSession>()
             }
@@ -487,6 +504,7 @@ fun Application.configureRouting() {
         }
 
         get("/tos") {
+            call.log()
             call.respondHtml {
                 head {
                     title {
@@ -587,6 +605,15 @@ fun generateSalt(): String {
     val bytes = ByteArray(32)
     random.nextBytes(bytes)
     return hash(bytes.joinToString("").filter { c-> c != '-' })
+}
+
+fun ApplicationCall.log() {
+    println("\nCall to " + this.request.origin.uri
+    + "\n* IP: " + this.request.origin.remoteAddress
+    + "\n* PORT: " + this.request.origin.remotePort
+    + "\n* METHOD: " + this.request.origin.method.value
+    + "\n* VERSION: " + this.request.origin.version
+    + "\n* TIMESTAMP: " + LocalTime.now().format(DateTimeFormatter.ISO_TIME))
 }
 
 data class UserObj(@Expose val username: String, @Expose val passwordHash: String, @Expose val salt: String, @Expose val email: String)
