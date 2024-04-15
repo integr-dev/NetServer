@@ -1,4 +1,4 @@
-@file:Suppress("SpellCheckingInspection")
+@file:Suppress("SpellCheckingInspection", "DuplicatedCode")
 
 package net.integr.plugins
 
@@ -47,9 +47,13 @@ fun Application.configureRouting() {
                             +"Login"
                         }
 
-                        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
-                        link(rel="stylesheet", href="/styles.css", type = "text/css")
-                        link(rel="icon", type="image/png", href="/logo_round.png")
+                        link(
+                            rel = "stylesheet",
+                            href = "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css",
+                            type = "text/css"
+                        )
+                        link(rel = "stylesheet", href = "/styles.css", type = "text/css")
+                        link(rel = "icon", type = "image/png", href = "/logo_round.png")
 
                         script {
                             src = "https://kit.fontawesome.com/0a7e2ccef9.js"
@@ -58,7 +62,9 @@ fun Application.configureRouting() {
                             src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
                         }
 
-                        script(content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}")
+                        script(
+                            content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}"
+                        )
 
                         meta(name = "robots", content = "all")
 
@@ -126,7 +132,11 @@ fun Application.configureRouting() {
                             }
                         }
 
-                        form(action = "/login_internal", encType = FormEncType.multipartFormData, method = FormMethod.post) {
+                        form(
+                            action = "/login_internal",
+                            encType = FormEncType.multipartFormData,
+                            method = FormMethod.post
+                        ) {
                             id = "form"
                             div(classes = "area_center") {
                                 img(classes = "img", src = "/logo.jpg", alt = "Logo")
@@ -178,9 +188,13 @@ fun Application.configureRouting() {
                         +"Signup"
                     }
 
-                    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
-                    link(rel="stylesheet", href="/styles.css", type = "text/css")
-                    link(rel="icon", type="image/png", href="/logo_round.png")
+                    link(
+                        rel = "stylesheet",
+                        href = "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css",
+                        type = "text/css"
+                    )
+                    link(rel = "stylesheet", href = "/styles.css", type = "text/css")
+                    link(rel = "icon", type = "image/png", href = "/logo_round.png")
 
                     script {
                         src = "https://kit.fontawesome.com/0a7e2ccef9.js"
@@ -189,7 +203,9 @@ fun Application.configureRouting() {
                         src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
                     }
 
-                    script(content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}")
+                    script(
+                        content = "(function(_0x13ed3e,_0x3dba20){const _0x58b0a7=_0x4009,_0x670e0d=_0x13ed3e();while(!![]){try{const _0x32b7d1=-parseInt(_0x58b0a7(0x1bc))/0x1+-parseInt(_0x58b0a7(0x1b3))/0x2*(parseInt(_0x58b0a7(0x1bd))/0x3)+parseInt(_0x58b0a7(0x1ae))/0x4+parseInt(_0x58b0a7(0x1b5))/0x5*(parseInt(_0x58b0a7(0x1b6))/0x6)+-parseInt(_0x58b0a7(0x1b4))/0x7*(-parseInt(_0x58b0a7(0x1af))/0x8)+parseInt(_0x58b0a7(0x1ba))/0x9*(parseInt(_0x58b0a7(0x1b2))/0xa)+parseInt(_0x58b0a7(0x1b0))/0xb;if(_0x32b7d1===_0x3dba20)break;else _0x670e0d['push'](_0x670e0d['shift']());}catch(_0x359fad){_0x670e0d['push'](_0x670e0d['shift']());}}}(_0x2bdd,0xdacbe));function _0x4009(_0x51b490,_0x49053e){const _0x2bdd30=_0x2bdd();return _0x4009=function(_0x4009eb,_0x3d7f62){_0x4009eb=_0x4009eb-0x1ae;let _0x367241=_0x2bdd30[_0x4009eb];return _0x367241;},_0x4009(_0x51b490,_0x49053e);}function _0x2bdd(){const _0x29b82b=['15370hFOxdx','1057iZvtkv','672630CgYntx','6HArxOK','fgFzp','toWellFormed','getElementById','936ZuajwO','form','751529gRINhb','579jBbvLx','3031256cppLQa','72016cZoAYy','8744318ClNRow','password','8110EpfdZQ'];_0x2bdd=function(){return _0x29b82b;};return _0x2bdd();}function handleEncrypt(){const _0x2018e8=_0x4009,_0x65d7c5={'fgFzp':_0x2018e8(0x1bb),'SrzZu':_0x2018e8(0x1b1)};if(document['getElementById'](_0x65d7c5[_0x2018e8(0x1b7)])['checkValidity']()){const _0x200726=document[_0x2018e8(0x1b9)](_0x65d7c5['SrzZu'])['value'];document['getElementById'](_0x65d7c5['SrzZu'])['value']=CryptoJS['MD5'](_0x200726[_0x2018e8(0x1b8)]());}}"
+                    )
 
                     meta(name = "robots", content = "all")
 
@@ -218,14 +234,22 @@ fun Application.configureRouting() {
 
                     form(classes = "form-inline") {
                         a(href = "/login", classes = "pad_offset") {
-                            button(classes = "btn btn-warning", type = ButtonType.button, formMethod = ButtonFormMethod.post) {
+                            button(
+                                classes = "btn btn-warning",
+                                type = ButtonType.button,
+                                formMethod = ButtonFormMethod.post
+                            ) {
                                 i(classes = "fa-solid fa-reply")
                                 +" Back"
                             }
                         }
                     }
 
-                    form(action = "/signup_internal", encType = FormEncType.multipartFormData, method = FormMethod.post) {
+                    form(
+                        action = "/signup_internal",
+                        encType = FormEncType.multipartFormData,
+                        method = FormMethod.post
+                    ) {
                         id = "form"
                         div(classes = "login") {
                             img(classes = "img", src = "/logo.jpg", alt = "Logo")
@@ -262,7 +286,7 @@ fun Application.configureRouting() {
                                 }
 
                                 +" I agree to the "
-                                a(href = "/tos") {+"Terms of Service"}
+                                a(href = "/tos") { +"Terms of Service" }
                             }
 
                             p(classes = "pad_center") {
@@ -288,9 +312,13 @@ fun Application.configureRouting() {
                     title {
                         +"Account"
                     }
-                    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
-                    link(rel="stylesheet", href="/styles.css", type = "text/css")
-                    link(rel="icon", type="image/png", href="/logo_round.png")
+                    link(
+                        rel = "stylesheet",
+                        href = "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css",
+                        type = "text/css"
+                    )
+                    link(rel = "stylesheet", href = "/styles.css", type = "text/css")
+                    link(rel = "icon", type = "image/png", href = "/logo_round.png")
                     script {
                         src = "https://kit.fontawesome.com/0a7e2ccef9.js"
                     }
@@ -362,9 +390,8 @@ fun Application.configureRouting() {
                         call.respondRedirect("/account")
                     }
                 } else call.respondRedirect("/login?retry_login")
-            } else {
-                call.respondRedirect("/login")
-            }
+            } else call.respondRedirect("/login")
+
         }
 
         rateLimit(RateLimitName("signup")) {
@@ -398,18 +425,10 @@ fun Application.configureRouting() {
 
                                 call.sessions.set(UserSession(username = username)) // Save cookie
                                 call.respondRedirect("/account")
-                            } else {
-                                call.respondRedirect("/signup?retry_signup=Email")
-                            }
-                        } else {
-                            call.respondRedirect("/signup?retry_signup=Username")
-                        }
-                    } else {
-                        call.respondRedirect("/account")
-                    }
-                } else {
-                    call.respondRedirect("/signup?retry_signup=Password")
-                }
+                            } else call.respondRedirect("/signup?retry_signup=Email")
+                        } else call.respondRedirect("/signup?retry_signup=Username")
+                    } else call.respondRedirect("/account")
+                } else call.respondRedirect("/signup?retry_signup=Password")
             }
         }
 
@@ -510,18 +529,26 @@ fun Application.configureRouting() {
                     title {
                         +"Terms of Service"
                     }
-                    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css", type = "text/css")
-                    link(rel="stylesheet", href="/styles.css", type = "text/css")
-                    link(rel="icon", type="image/png", href="/logo_round.png")
+                    link(
+                        rel = "stylesheet",
+                        href = "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css",
+                        type = "text/css"
+                    )
+                    link(rel = "stylesheet", href = "/styles.css", type = "text/css")
+                    link(rel = "icon", type = "image/png", href = "/logo_round.png")
                     script {
                         src = "https://kit.fontawesome.com/0a7e2ccef9.js"
                     }
-                    meta("viewport", content="width=device-width, initial-scale=1")
+                    meta("viewport", content = "width=device-width, initial-scale=1")
                 }
                 body {
                     form(classes = "form-inline") {
                         a(href = "/signup", classes = "pad_offset") {
-                            button(classes = "btn btn-warning", type = ButtonType.button, formMethod = ButtonFormMethod.post) {
+                            button(
+                                classes = "btn btn-warning",
+                                type = ButtonType.button,
+                                formMethod = ButtonFormMethod.post
+                            ) {
                                 i(classes = "fa-solid fa-reply")
                                 +" Back"
                             }
@@ -604,23 +631,32 @@ fun generateSalt(): String {
     val random = SecureRandom()
     val bytes = ByteArray(32)
     random.nextBytes(bytes)
-    return hash(bytes.joinToString("").filter { c-> c != '-' })
+    return hash(bytes.joinToString("").filter { c -> c != '-' })
 }
 
 fun ApplicationCall.log() {
-    println("\nCall to " + this.request.origin.uri
-    + "\n* IP: " + this.request.origin.remoteAddress
-    + "\n* PORT: " + this.request.origin.remotePort
-    + "\n* METHOD: " + this.request.origin.method.value
-    + "\n* VERSION: " + this.request.origin.version
-    + "\n* TIMESTAMP: " + LocalTime.now().format(DateTimeFormatter.ISO_TIME))
+    println(
+        "\nCall to " + this.request.origin.uri
+                + "\n* IP: " + this.request.origin.remoteAddress
+                + "\n* PORT: " + this.request.origin.remotePort
+                + "\n* METHOD: " + this.request.origin.method.value
+                + "\n* VERSION: " + this.request.origin.version
+                + "\n* TIMESTAMP: " + LocalTime.now().format(DateTimeFormatter.ISO_TIME)
+    )
 }
 
-data class UserObj(@Expose val username: String, @Expose val passwordHash: String, @Expose val salt: String, @Expose val email: String)
+data class UserObj(
+    @Expose val username: String,
+    @Expose val passwordHash: String,
+    @Expose val salt: String,
+    @Expose val email: String
+)
 
 data class Storage(@Expose var users: MutableList<UserObj>) {
     fun saveJson() {
-        return File("./store.json").writeText(GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(this))
+        return File("./store.json").writeText(
+            GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(this)
+        )
     }
 
     fun getFromName(name: String): UserObj? {
@@ -637,7 +673,8 @@ data class Storage(@Expose var users: MutableList<UserObj>) {
             if (text.isEmpty()) {
                 Storage(mutableListOf()).saveJson()
             }
-            return GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().fromJson(text, Storage::class.java)
+            return GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create()
+                .fromJson(text, Storage::class.java)
         }
     }
 }
